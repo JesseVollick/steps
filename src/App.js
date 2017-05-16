@@ -5,17 +5,20 @@ function ProcessTitle (props){
   return <h1>{props.title}</h1>
 }
 
-var Timer = React.createClass({
-  render:function(){
+class Timer extends Component{
+  render(){
     return(
       <h2>Timer goes In here</h2>
     )
   }
-});
+}
 
-var Step = React.createClass({
-  render:function(){
-    var className = 'step';
+class Step extends Component{
+  render(){
+    var className = ' step';
+    if(this.props.selected){
+
+    }
     return(
       <div className={className}>
         {this.props.index}
@@ -24,13 +27,11 @@ var Step = React.createClass({
       </div>
     )
   }
-});
+}
 
 
-var Steps = React.createClass({
-  render:function(){
-
-
+class Steps extends Component{
+  render(){
   var stepsList = [];
   for(var i =0; i< this.props.numSteps; i ++){
     stepsList.push(
@@ -42,7 +43,7 @@ var Steps = React.createClass({
       <div className='steps'>{stepsList}</div>
     )
   }
-});
+}
 
 
 class App extends Component {
@@ -86,6 +87,7 @@ class App extends Component {
           <ProcessTitle title='Clever Dripper' />
           <Timer />
           <Steps numSteps={cleverDripper.length} process={cleverDripper}></Steps>
+
         </div>
       </div>
     );

@@ -7,8 +7,12 @@ function ProcessTitle (props){
 
 class Timer extends Component{
   render(){
+    function toggleButton () {
+
+    }
+
     return(
-      <h2>Timer goes In here</h2>
+      <button onClick={this.toggleButton}>Toggle</button>
     )
   }
 }

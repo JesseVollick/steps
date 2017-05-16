@@ -15,25 +15,34 @@ class Timer extends Component{
 
 class Step extends Component{
   render(){
-    var className = ' step';
+    var className = 'step';
     if(this.props.selected){
-
+      className += ' selected'
     }
     return(
       <div className={className}>
-        {this.props.index}
-        {this.props.description}
-        {this.props.time}
+        <div>{this.props.index}</div>
+        <div>{this.props.description}</div>
+        <div>{this.props.time} seconds</div>
       </div>
     )
   }
 }
 
 
-class Steps extends Component{
+var Steps = React.createClass ({
+  
+  getInitialState: function() {
+    return {
+      selectedIndex: 0
+    }
+  },
+
+
   render(){
   var stepsList = [];
   for(var i =0; i< this.props.numSteps; i ++){
+    // var isSelected = i === this.state.selectedIndex;
     stepsList.push(
       <Step key={this.props.process[i].key}index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time} />
     )
@@ -43,7 +52,8 @@ class Steps extends Component{
       <div className='steps'>{stepsList}</div>
     )
   }
-}
+})
+
 
 
 class App extends Component {
@@ -71,15 +81,15 @@ class App extends Component {
         index: 4,
         key: 4,
         description:'drop at 2:00 aiming for a total brew time of 3:30',
-        time: 85
+        time: 90
       },
       {
         index: 5,
         key: 5,
         description:'Clean up and savor a delicious brew',
-        time: 85
       },
   ];
+
 
     return (
       <div className="App">

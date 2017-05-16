@@ -8,7 +8,7 @@ function ProcessTitle (props){
 var Timer = React.createClass({
   render:function(){
     return(
-      <h2>Timer goes In here</h2>
+      <a href="#">Timer</a>
     )
   }
 });
@@ -29,7 +29,7 @@ var Step = React.createClass({
 var Steps = React.createClass({
   render:function(){
   var stepsList = [];
-  for(var i =0; i< this.props.numSteps;i ++){
+  for(var i =0; i < this.props.numSteps;i ++){
     stepsList.push(
       <Step />
     )

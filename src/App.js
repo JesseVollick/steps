@@ -8,12 +8,10 @@ function ProcessTitle (props){
 class Timer extends Component{
   render(){
     function toggleButton () {
-      console.log("jesse");
-      console.log('tyler'); 
     }
 
     return(
-      <button onClick={this.toggleButton}>Toggle</button>
+      <button onClick={this.props.toggleButton}>Toggle</button>
     )
   }
 }
@@ -43,18 +41,36 @@ var Steps = React.createClass ({
     }
   },
 
+  onToggleClick: function(evt) {
+    if(this.state.selectedIndex < this.props.numSteps){
+      this.setState({
+        selectedIndex: (this.state.selectedIndex + 1)
+      })
+    }else {
+      this.setState({
+        selectedIndex: 0
+      })
+    }
+
+  },
+
 
   render(){
   var stepsList = [];
   for(var i =0; i< this.props.numSteps; i ++){
-    // var isSelected = i === this.state.selectedIndex;
+    var isSelected = i === this.state.selectedIndex;
     stepsList.push(
-      <Step key={this.props.process[i].key}index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time} />
+      <Step key={this.props.process[i].key}index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time} selected={isSelected}/>
     )
   }
 
     return(
-      <div className='steps'>{stepsList}</div>
+      <div>
+        <Timer toggleButton={this.onToggleClick} />
+        <div>{this.state.selectedIndex}</div>
+        <div className='steps'>{stepsList}</div>
+      </div>
+
     )
   }
 })
@@ -100,7 +116,6 @@ class App extends Component {
       <div className="App">
         <div>
           <ProcessTitle title='Clever Dripper' />
-          <Timer />
           <Steps numSteps={cleverDripper.length} process={cleverDripper}></Steps>
 
         </div>

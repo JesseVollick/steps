@@ -8,7 +8,7 @@ function ProcessTitle (props){
 class Timer extends Component{
   render(){
     function toggleButton () {
-
+      console.log(this);
     }
 
     return(
@@ -35,7 +35,7 @@ class Step extends Component{
 
 
 var Steps = React.createClass ({
-  
+
   getInitialState: function() {
     return {
       selectedIndex: 0

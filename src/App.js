@@ -8,7 +8,7 @@ function ProcessTitle (props){
 class Timer extends Component{
   render(){
     function toggleButton () {
-      console.log(this);
+      console.log("jesse");
     }
 
     return(

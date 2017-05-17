@@ -19,3 +19,7 @@
   /*margin: 20px O;*/
   overflow: hidden;
 }
+
+.step.selected{
+  border-color: #3BA8AA
+}

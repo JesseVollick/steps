@@ -9,7 +9,10 @@ class Timer extends Component{
   render(){
 
     return(
-      <button onClick={this.props.toggleButton}>Toggle</button>
+      <div>
+        <button onClick={this.props.toggleButton}>Start</button>
+        <div>{this.props.totalTime}</div>
+      </div>
     )
   }
 }
@@ -35,7 +38,8 @@ var Steps = React.createClass ({
 
   getInitialState: function() {
     return {
-      selectedIndex: 0
+      selectedIndex: 0,
+      totalTime: 0
     }
   },
 
@@ -47,20 +51,30 @@ var Steps = React.createClass ({
     }
   },
 
+  totalTime: function () {
+    var totalTime = 0;
+    for (var i = 0; i < this.props.process.length; i++) {
+      totalTime += this.props.process[i].time;
+      console.log(totalTime);
+    }
+    this.setState({
+      totalTime: this.state.totalTime
+    })
+  },
 
   render(){
-  var stepsList = [];
-  for(var i =0; i< this.props.numSteps; i ++){
-    var isSelected = i === this.state.selectedIndex;
-    stepsList.push(
-      <Step key={this.props.process[i].key}index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time} selected={isSelected}/>
-    )
-  }
+    var stepsList = [];
+    for(var i =0; i< this.props.numSteps; i ++){
+      var isSelected = i === this.state.selectedIndex;
+      stepsList.push(
+        <Step key={this.props.process[i].key} index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time} selected={isSelected}/>
+      )
+    }
 
     return(
       <div>
-        <Timer toggleButton={this.onToggleClick} />
-        <div>{this.state.selectedIndex}</div>
+        <Timer toggleButton={this.onToggleClick} totalTime={this.state.totalTime} />
+        <div>Selected Index {this.state.selectedIndex}</div>
         <div className='steps'>{stepsList}</div>
       </div>
 
@@ -101,6 +115,7 @@ class App extends Component {
         index: 5,
         key: 5,
         description:'Clean up and savor a delicious brew',
+        time: 0
       },
   ];
 

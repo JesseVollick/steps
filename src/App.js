@@ -9,6 +9,7 @@ class Timer extends Component{
   render(){
     function toggleButton () {
       console.log("jesse");
+      console.log('tyler'); 
     }
 
     return(

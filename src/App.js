@@ -55,7 +55,6 @@ var Steps = React.createClass ({
     var totalTime = 0;
     for (var i = 0; i < this.props.process.length; i++) {
       totalTime += this.props.process[i].time;
-      console.log(totalTime);
     }
     this.setState({
       totalTime: this.state.totalTime

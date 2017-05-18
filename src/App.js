@@ -11,7 +11,7 @@ class Timer extends Component{
     return(
       <div>
         <button onClick={this.props.toggleButton}>Start</button>
-        <div>{this.props.totalTime}</div>
+        <div className="totalTime">Total Time: {this.props.totalTime}</div>
       </div>
     )
   }
@@ -25,9 +25,9 @@ class Step extends Component{
     }
     return(
       <div className={className}>
-        <div>{this.props.index}</div>
-        <div>{this.props.description}</div>
-        <div>{this.props.time} seconds</div>
+        <div className="index">{this.props.index}</div>
+        <div className="description">{this.props.description}</div>
+        <div className="time">{this.props.time} seconds</div>
       </div>
     )
   }
@@ -73,7 +73,7 @@ var Steps = React.createClass ({
     return(
       <div>
         <Timer toggleButton={this.onToggleClick} totalTime={this.state.totalTime} />
-        <div>Selected Index {this.state.selectedIndex}</div>
+        <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
         <div className='steps'>{stepsList}</div>
       </div>
 

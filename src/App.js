@@ -11,9 +11,9 @@ class Timer extends Component{
   render(){
     return(
       <div>
-        <button onClick={this.props.toggleButton}>toggle</button>
+        <button onClick={this.props.toggleButton}>Toggle</button>
         <button onClick={this.props.startbutton}>start</button>
-        <div>{this.props.totalTime}</div>
+        <div className="totalTime">Total Time: {this.props.totalTime}</div>
       </div>
     )
   }
@@ -28,9 +28,9 @@ class Step extends Component{
     }
     return(
       <div className={className}>
-        <div>{this.props.index}</div>
-        <div>{this.props.description}</div>
-        <div>{this.props.time} seconds</div>
+        <div className="index">{this.props.index}</div>
+        <div className="description">{this.props.description}</div>
+        <div className="time">{this.props.time} seconds</div>
       </div>
     )
   }
@@ -77,8 +77,16 @@ var Steps = React.createClass ({
     }
   },
 
-  startButtonClick: function(evt){
 
+
+  totalTime: function () {
+    var totalTime = 0;
+    for (var i = 0; i < this.props.process.length; i++) {
+      totalTime += this.props.process[i].time;
+    }
+    this.setState({
+      totalTime: this.state.totalTime
+    })
   },
 
 
@@ -103,7 +111,7 @@ var Steps = React.createClass ({
       <div>
         <Timer toggleButton={this.onToggleClick} startbutton={this.startButtonClick} totalTime={totalTime} />
         <TimerExample />
-        <div>Selected Index {this.state.selectedIndex}</div>
+        <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
         <div className='steps'>{stepsList}</div>
       </div>
     )

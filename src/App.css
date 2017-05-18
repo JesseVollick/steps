@@ -1,27 +1,65 @@
 .App {
   text-align: center;
+  padding: 3%;
+  color: #333;
+}
+
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0;
 }
 
 .step{
   border: 5px solid #ccc;
   font:700 20px HelveticaNeue, Helvetica, Arial;
-   margin:0 auto;
-   padding:20px;
-   max-width: 600px;
+  margin:0 auto;
+  padding:20px;
+  max-width: 600px;
+  min-height: 25px;
+  font-size: .85em;
 }
 
 .step.selected{
-  border-color: #3BA8AA
+  border-color: #3BA8AA;
 }
 
+.step * {
+  float: left;
+  margin-right: 25px;
+}
+
+.step .index{
+  border: 1px solid #333;
+  border-radius: 50%;
+  padding: 3px;
+  width: 15px;
+  background: #333;
+  color: white;
+}
+
+.step .time {
+  float: right;
+}
 
 .steps{
-  /*margin: 20px O;*/
   overflow: hidden;
 }
 
-.step.selected{
-  border-color: #3BA8AA
+button {
+  margin: 10px;
+  padding: 10px;
+  font-size: .75em;
+  background-color: #333;
+  border: none;
+  color: #3BA8AA;
+  letter-spacing: 2px;
+  border-radius: 10%;
+}
+
+.totalTime,
+.selectedIndex{
+  margin: 5px;
 }
 
 /*flexBox

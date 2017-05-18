@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
 
+//says 'CLever Dripper'
 function ProcessTitle (props){
   return <h1>{props.title}</h1>
 }
 
+
 class Timer extends Component{
   render(){
-
     return(
       <div>
-        <button onClick={this.props.toggleButton}>Start</button>
+        <button onClick={this.props.toggleButton}>toggle</button>
+        <button onClick={this.props.startbutton}>start</button>
         <div>{this.props.totalTime}</div>
       </div>
     )
   }
 }
+
 
 class Step extends Component{
   render(){
@@ -34,12 +37,35 @@ class Step extends Component{
 }
 
 
+//returns 'secondsElapsed: ' and counts down.
+var TimerExample = React.createClass({
+  getInitialState: function() {
+    return {secondsElapsed: 210};
+  },
+  tick: function() {
+    this.setState({secondsElapsed: this.state.secondsElapsed -1});
+  },
+  componentDidMount: function() {
+    this.interval = setInterval(this.tick, 1000);
+  },
+
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
+  },
+  render() {
+    return (
+      <div>Seconds Elapsed: {this.state.secondsElapsed}</div>
+    );
+  }
+});
+
+
 var Steps = React.createClass ({
 
   getInitialState: function() {
     return {
       selectedIndex: 0,
-      totalTime: 0
+    //  totalTime: 0
     }
   },
 
@@ -51,33 +77,35 @@ var Steps = React.createClass ({
     }
   },
 
-  totalTime: function () {
-    var totalTime = 0;
-    for (var i = 0; i < this.props.process.length; i++) {
-      totalTime += this.props.process[i].time;
-      console.log(totalTime);
-    }
-    this.setState({
-      totalTime: this.state.totalTime
-    })
+  startButtonClick: function(evt){
+
   },
 
+
   render(){
+    var totalTime = 0;
+      for (var i = 0; i < this.props.process.length; i++){
+        totalTime += this.props.process[i].time;
+      }
+
     var stepsList = [];
-    for(var i =0; i< this.props.numSteps; i ++){
-      var isSelected = i === this.state.selectedIndex;
-      stepsList.push(
-        <Step key={this.props.process[i].key} index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time} selected={isSelected}/>
-      )
-    }
+      for(var i =0; i< this.props.numSteps; i ++){
+        var isSelected = i === this.state.selectedIndex;
+        stepsList.push(
+          <Step
+              key={this.props.process[i].key} index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time}
+              selected={isSelected}
+            />
+        )
+      }
 
     return(
       <div>
-        <Timer toggleButton={this.onToggleClick} totalTime={this.state.totalTime} />
+        <Timer toggleButton={this.onToggleClick} startbutton={this.startButtonClick} totalTime={totalTime} />
+        <TimerExample />
         <div>Selected Index {this.state.selectedIndex}</div>
         <div className='steps'>{stepsList}</div>
       </div>
-
     )
   }
 })
@@ -125,6 +153,7 @@ class App extends Component {
         <div>
           <ProcessTitle title='Clever Dripper' />
           <Steps numSteps={cleverDripper.length} process={cleverDripper}></Steps>
+
 
         </div>
       </div>

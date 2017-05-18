@@ -22,6 +22,7 @@ h1 {
 
 .step.selected{
   border-color: #3BA8AA;
+  background-color: #A4EEF6; 
 }
 
 .step * {

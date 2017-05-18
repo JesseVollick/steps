@@ -6,20 +6,6 @@ function ProcessTitle (props){
   return <h1>{props.title}</h1>
 }
 
-
-class Timer extends Component{
-  render(){
-    return(
-      <div>
-        <button onClick={this.props.toggleButton}>Toggle</button>
-        <button onClick={this.props.startbutton}>start</button>
-        <div className="totalTime">Total Time: {this.props.totalTime}</div>
-      </div>
-    )
-  }
-}
-
-
 class Step extends Component{
   render(){
     var className = 'step';
@@ -36,28 +22,18 @@ class Step extends Component{
   }
 }
 
-
-//returns 'secondsElapsed: ' and counts down.
-var TimerExample = React.createClass({
-  getInitialState: function() {
-    return {secondsElapsed: 210};
-  },
-  tick: function() {
-    this.setState({secondsElapsed: this.state.secondsElapsed -1});
-  },
-  componentDidMount: function() {
-    this.interval = setInterval(this.tick, 1000);
-  },
-
-  componentWillUnmount: function() {
-    clearInterval(this.interval);
-  },
-  render() {
-    return (
-      <div>Seconds Elapsed: {this.state.secondsElapsed}</div>
-    );
+class Timer extends Component{
+  render(){
+    return(
+      <div>
+        <button onClick={this.props.onToggleClick}>Toggle</button>
+        <button onClick={this.props.startbutton}>start</button>
+        <div className="totalTime">Total Time: {this.props.totalTime}</div>
+      </div>
+    )
   }
-});
+}
+
 
 
 var Steps = React.createClass ({
@@ -65,7 +41,7 @@ var Steps = React.createClass ({
   getInitialState: function() {
     return {
       selectedIndex: 0,
-    //  totalTime: 0
+      totalTime: this.props.totalTime
     }
   },
 
@@ -77,31 +53,24 @@ var Steps = React.createClass ({
     }
   },
 
-
-
-  totalTime: function () {
-    var totalTime = 0;
-    for (var i = 0; i < this.props.process.length; i++) {
-      totalTime += this.props.process[i].time;
-    }
-    this.setState({
-      totalTime: this.state.totalTime
-    })
+  startButtonClick: function(evt) {
+    this.interval = setInterval(this.startButtonClick, 1000);
+    this.setState({totalTime: this.state.totalTime -1})
   },
 
 
+
   render(){
-    var totalTime = 0;
-      for (var i = 0; i < this.props.process.length; i++){
-        totalTime += this.props.process[i].time;
-      }
 
     var stepsList = [];
       for(var i =0; i< this.props.numSteps; i ++){
         var isSelected = i === this.state.selectedIndex;
         stepsList.push(
           <Step
-              key={this.props.process[i].key} index={this.props.process[i].index} description={this.props.process[i].description} time={this.props.process[i].time}
+              key={this.props.process[i].key}
+              index={this.props.process[i].index}
+              description={this.props.process[i].description}
+              time={this.props.process[i].time}
               selected={isSelected}
             />
         )
@@ -109,8 +78,12 @@ var Steps = React.createClass ({
 
     return(
       <div>
-        <Timer toggleButton={this.onToggleClick} startbutton={this.startButtonClick} totalTime={totalTime} />
-        <TimerExample />
+        <ProcessTitle title='Clever Dripper' />
+        <Timer
+          onToggleClick={this.onToggleClick}
+          startbutton={this.startButtonClick}
+          totalTime={this.state.totalTime}
+         />
         <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
         <div className='steps'>{stepsList}</div>
       </div>
@@ -118,52 +91,54 @@ var Steps = React.createClass ({
   }
 })
 
-
-
 class App extends Component {
   render() {
+
     var cleverDripper = [
       {
         index: 1,
         key: 1,
         description:'20 second bloom with 75 to 100 g water at 205 deg f',
-        time: 20
+        time:
       },
       {
         index: 2,
         key: 2,
         description:'stir 5 times over the next 15 seconds',
-        time: 15
+        time: 20
       },
       {
         index: 3,
         key: 3,
         description:'complete pour to a total of 365g, stir 5x and cover',
-        time: 85
+        time: 20
       },
       {
         index: 4,
         key: 4,
         description:'drop at 2:00 aiming for a total brew time of 3:30',
-        time: 90
+        time: 20
       },
       {
         index: 5,
         key: 5,
         description:'Clean up and savor a delicious brew',
-        time: 0
+        time: 20
       },
   ];
 
+  var totalTime = 0; //now equals 210
+  for (var i = 0; i < cleverDripper.length; i++){
+    totalTime += cleverDripper[i].time;
+  }
 
     return (
       <div className="App">
-        <div>
-          <ProcessTitle title='Clever Dripper' />
-          <Steps numSteps={cleverDripper.length} process={cleverDripper}></Steps>
-
-
-        </div>
+          <Steps
+            numSteps={cleverDripper.length}
+            process={cleverDripper}
+            totalTime={totalTime}
+          />
       </div>
     );
   }

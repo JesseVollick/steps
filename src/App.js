@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import CleverDripper from './processes/process.js';
 
 //says 'CLever Dripper'
 function ProcessTitle (props){
@@ -12,6 +13,7 @@ class Step extends Component{
     if(this.props.selected){
       className += ' selected'
     }
+
     return(
       <div className={className}>
         <div className="index">{this.props.index}</div>
@@ -27,14 +29,12 @@ class Timer extends Component{
     return(
       <div>
         <button onClick={this.props.onToggleClick}>Toggle</button>
-        <button onClick={this.props.startbutton}>start</button>
+        <button onClick={this.props.startbutton}>Start</button>
         <div className="totalTime">Total Time: {this.props.totalTime}</div>
       </div>
     )
   }
 }
-
-
 
 var Steps = React.createClass ({
 
@@ -55,15 +55,13 @@ var Steps = React.createClass ({
 
   startButtonClick: function(evt) {
     this.interval = setInterval(this.startButtonClick, 1000);
-    this.setState({totalTime: this.state.totalTime -1})
+    this.setState({totalTime: this.state.totalTime - 1})
   },
-
-
 
   render(){
 
     var stepsList = [];
-      for(var i =0; i< this.props.numSteps; i ++){
+      for(var i = 0; i < this.props.numSteps; i ++){
         var isSelected = i === this.state.selectedIndex;
         stepsList.push(
           <Step
@@ -99,7 +97,7 @@ class App extends Component {
         index: 1,
         key: 1,
         description:'20 second bloom with 75 to 100 g water at 205 deg f',
-        time:
+        time: 20
       },
       {
         index: 2,
@@ -125,7 +123,7 @@ class App extends Component {
         description:'Clean up and savor a delicious brew',
         time: 20
       },
-  ];
+    ];
 
   var totalTime = 0; //now equals 210
   for (var i = 0; i < cleverDripper.length; i++){

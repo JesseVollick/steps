@@ -63,7 +63,7 @@ var Steps = React.createClass ({
   },
 
   switchSelected: function(evt){
-      if(this.state.totalTime ===  0 ){
+      if(this.state.totalTime % 5 === 0 ){
         this.setState({selectedIndex: this.state.selectedIndex + 1})
       }
   },
@@ -76,6 +76,7 @@ var Steps = React.createClass ({
   startButtonClick: function(evt) {
     this.interval = setInterval(this.tick, 1000);
     this.calculateSelectedTimes();
+
   },
 
 
@@ -111,9 +112,11 @@ var Steps = React.createClass ({
 })
 
 class App extends Component {
-  render() {
 
-    var cleverDripper = [
+  constructor (props) {
+    super (props);
+
+    this.cleverDripper = [
       {
         index: 1,
         key: 1,
@@ -143,19 +146,26 @@ class App extends Component {
         key: 5,
         description:'Clean up and savor a delicious brew',
         time: 0
-      },
+      }
+    ];
+  }
+
+  render() {
+
+    var cleverDripper = [
+
   ];
 
   var totalTime = 0; //now equals 210
-  for (var i = 0; i < cleverDripper.length; i++){
-    totalTime += cleverDripper[i].time;
+  for (var i = 0; i < this.cleverDripper.length; i++){
+    totalTime += this.cleverDripper[i].time;
   }
 
     return (
       <div className="App">
           <Steps
-            numSteps={cleverDripper.length}
-            process={cleverDripper}
+            numSteps={this.cleverDripper.length}
+            process={this.cleverDripper}
             totalTime={totalTime}
           />
       </div>

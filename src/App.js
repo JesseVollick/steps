@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import CleverDripper from './processes/process.js';
+// import CleverDripper from './processes/process.js';
 
 //says 'CLever Dripper'
 function ProcessTitle (props){
@@ -40,7 +40,8 @@ var Steps = React.createClass ({
   getInitialState: function() {
     return {
       selectedIndex: -1,
-      totalTime: this.props.totalTime
+      totalTime: this.props.totalTime,
+      timePerStep: 0
     }
   },
 
@@ -62,20 +63,26 @@ var Steps = React.createClass ({
   },
 
   switchSelected: function(evt){
-      if(this.state.totalTime % 5 === 0 ){
-        this.setState({selectedIndex: this.state.selectedIndex + 1})
+      if(this.state.timePerStep === this.props.process[this.state.selectedIndex].time){
+        this.setState({selectedIndex: this.state.selectedIndex + 1});
+        this.setState({timePerStep: 0});
       }
   },
 
-  tick: function(ext){
+  tickDown: function(ext){
     this.setState({totalTime: this.state.totalTime -1})
+  },
+
+  tickUp: function(ext){
+    this.setState({timePerStep: this.state.timePerStep + 1})
     this.switchSelected();
   },
 
   startButtonClick: function(evt) {
-    this.interval = setInterval(this.tick, 1000);
+    this.interval = setInterval(this.tickDown, 1000);
+    this.interval = setInterval(this.tickUp, 1000);
     this.calculateSelectedTimes();
-
+    this.setState({selectedIndex: this.state.selectedIndex + 1})
   },
 
   render(){
@@ -103,6 +110,7 @@ var Steps = React.createClass ({
           totalTime={this.state.totalTime}
          />
         <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
+        <div>timer going up: {this.state.timePerStep}</div>
         <div className='steps'>{stepsList}</div>
       </div>
     )
@@ -119,25 +127,25 @@ class App extends Component {
         index: 1,
         key: 1,
         description:'20 second bloom with 75 to 100 g water at 205 deg f',
-        time: 20
+        time: 5
       },
       {
         index: 2,
         key: 2,
         description:'stir 5 times over the next 15 seconds',
-        time: 15
+        time: 4
       },
       {
         index: 3,
         key: 3,
         description:'complete pour to a total of 365g, stir 5x and cover',
-        time: 85
+        time: 10
       },
       {
         index: 4,
         key: 4,
         description:'drop at 2:00 aiming for a total brew time of 3:30',
-        time: 90
+        time: 14
       },
       {
         index: 5,

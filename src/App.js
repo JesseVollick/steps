@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-// import CleverDripper from './processes/process.js';
+import processes from './processes/process.js';
 
 //says 'CLever Dripper'
 function ProcessTitle (props){
@@ -36,91 +36,164 @@ class Timer extends Component{
   }
 }
 
-var Steps = React.createClass ({
-  getInitialState: function() {
-    return {
-      selectedIndex: -1,
-      totalTime: this.props.totalTime,
-      timePerStep: 0
-    }
-  },
+class Steps extends Component {
+  constructor(props, ...args) {
+    super(props, ...args);
 
-  onToggleClick: function(evt) {
+    this.state = {
+      selectedIndex: -1,
+      totalTime: props.totalTime,
+      timePerStep: 0
+    };
+    this.onToggleClick = this.onToggleClick.bind(this);
+    this.switchSelected = this.switchSelected.bind(this);
+    this.tickDown = this.tickDown.bind(this);
+    this.tickUp = this.tickUp.bind(this);
+    this.startButtonClick = this.startButtonClick.bind(this);
+  }
+
+  onToggleClick(evt) {
     if(this.state.selectedIndex < this.props.numSteps){
       this.setState({
         selectedIndex: (this.state.selectedIndex + 1)
       })
     }
-  },
+  }
 
-  calculateSelectedTimes: function(){
-    console.log(this.props.process);
-    let processTimesArr = [];
-    for(var i=0; i < this.props.process.length; i++ ){
-      processTimesArr.push(this.props.process[i].time);
-      console.log(processTimesArr);
-    }
-  },
-
-  switchSelected: function(evt){
+  switchSelected(evt){
       if(this.state.timePerStep === this.props.process[this.state.selectedIndex].time){
         this.setState({selectedIndex: this.state.selectedIndex + 1});
         this.setState({timePerStep: 0});
       }
-  },
+      if(this.state.totalTime === 0){
+        this.reset();
+      }
+  }
 
-  tickDown: function(ext){
+  reset(timeLeft){
+    clearInterval(this.countDown);
+    clearInterval(this.countUp);
+    this.setState({
+      totalTime: this.props.totalTime,
+      selectedIndex: -1
+    });
+  }
+
+  tickDown(ext){
     this.setState({totalTime: this.state.totalTime -1})
-  },
+  }
 
-  tickUp: function(ext){
+  tickUp(ext){
     this.setState({timePerStep: this.state.timePerStep + 1})
     this.switchSelected();
-  },
+  }
 
-  startButtonClick: function(evt) {
+  startButtonClick(evt) {
     this.interval = setInterval(this.tickDown, 1000);
     this.interval = setInterval(this.tickUp, 1000);
-    this.calculateSelectedTimes();
-    this.setState({selectedIndex: this.state.selectedIndex + 1})
-  },
+    this.setState({selectedIndex: this.state.selectedIndex + 1});
+  }
 
   render(){
 
-    var stepsList = [];
-      for(var i = 0; i < this.props.numSteps; i ++){
-        var isSelected = i === this.state.selectedIndex;
-        stepsList.push(
-          <Step
-              key={this.props.process[i].key}
-              index={this.props.process[i].index}
-              description={this.props.process[i].description}
-              time={this.props.process[i].time}
-              selected={isSelected}
-            />
-        )
-      }
+      //var stepsList = [];
+      // for(var i = 0; i < this.props.numSteps; i ++){
+      //   var isSelected = i === this.state.selectedIndex;
+      //   stepsList.push(
+      //     <Step
+      //         key={this.props.process[i].key}
+      //         index={this.props.process[i].index}
+      //         description={this.props.process[i].description}
+      //         time={this.props.process[i].time}
+      //         selected={isSelected}
+      //       />
+      //   )
+      // } TODO: map
 
+      return(
+        <div>
+          <ProcessTitle title='Clever Dripper' />
+          <Timer
+            onToggleClick={this.onToggleClick}
+            startbutton={this.startButtonClick}
+            totalTime={this.state.totalTime}
+           />
+          <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
+          <div>timer going up: {this.state.timePerStep}</div>
+          <div className='steps'>
+            {this.props.process.map((step, i) => (
+              <Step
+                key={step.key}
+                index={step.index}
+                description={step.description}
+                time={step.time}
+                selected={i === this.state.selectedIndex}
+              />
+            ))}
+          </div>
+        </div>
+      )
+
+    // return(
+    //   <div>
+    //     <ProcessTitle title='Clever Dripper' />
+    //     <Timer
+    //       onToggleClick={this.onToggleClick}
+    //       startbutton={this.startButtonClick}
+    //       totalTime={this.state.totalTime}
+    //      />
+    //     <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
+    //     <div>timer going up: {this.state.timePerStep}</div>
+    //     <div className='steps'>{stepsList}</div>
+    //   </div>
+    // )
+  }
+}
+
+
+class StepsFromExternalData extends Component {
+  constructor(props, ...args) {
+    super(props, ...args);
+
+    this.state = {
+      selectedIndex: -1,
+      totalTime: props.totalTime,
+      timePerStep: 0
+    };
+    // this.onToggleClick = this.onToggleClick.bind(this);
+    // this.switchSelected = this.switchSelected.bind(this);
+    // this.tickDown = this.tickDown.bind(this);
+    // this.tickUp = this.tickUp.bind(this);
+    // this.startButtonClick = this.startButtonClick.bind(this);
+  }
+  render(){
     return(
       <div>
-        <ProcessTitle title='Clever Dripper' />
-        <Timer
-          onToggleClick={this.onToggleClick}
-          startbutton={this.startButtonClick}
-          totalTime={this.state.totalTime}
-         />
-        <div className="selectedIndex">Selected Index : {this.state.selectedIndex}</div>
-        <div>timer going up: {this.state.timePerStep}</div>
-        <div className='steps'>{stepsList}</div>
+          <div>StepsFromExternalData Component goes Here</div>
+          <h1>{this.props.name}</h1>
+          <h2>{this.props.totalTime} Seconds</h2>
+            <div className='steps'>
+              {this.props.processSteps.map((step, i) => (
+                <Step
+                  key={step.key}
+                  description={step.description}
+                  time={step.time}
+                  selected={i === this.state.selectedIndex}
+                />
+              ))}
+            </div>
       </div>
+
     )
   }
-})
+}
+
 
 class App extends Component {
 
   constructor (props) {
     super (props);
+
 
     this.cleverDripper = [
       {
@@ -158,10 +231,16 @@ class App extends Component {
 
   render() {
 
+    console.log(processes.CleverDripper);
 
   var totalTime = 0; //now equals 210
   for (var i = 0; i < this.cleverDripper.length; i++){
     totalTime += this.cleverDripper[i].time;
+  }
+  var totalTimeFrench = 0; //now equals 210
+  for (var i = 0; i < processes.FrenchPress.steps.length; i++){
+    totalTimeFrench += processes.FrenchPress.steps[i].time;
+    console.log(processes.FrenchPress.steps[i].time);
   }
 
     return (
@@ -170,6 +249,12 @@ class App extends Component {
             numSteps={this.cleverDripper.length}
             process={this.cleverDripper}
             totalTime={totalTime}
+          />
+        <StepsFromExternalData
+            name={processes.FrenchPress.name}
+            numSteps={processes.FrenchPress.steps.length}
+            processSteps={processes.FrenchPress.steps}
+            totalTime={totalTimeFrench}
           />
       </div>
     );
